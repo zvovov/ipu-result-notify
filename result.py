@@ -2,6 +2,7 @@
 
 from __future__ import print_function, unicode_literals
 
+import datetime
 import json
 import random
 import re
@@ -57,9 +58,9 @@ def findRegex(_string, _type):
         regex = r'">(.*)</a>'
     elif _type == 'link':
         regex = r'href="(.*)"'
-    
+
     result = re.findall(regex, unicode(_string))
-    
+
     return result if result else None
 
 
@@ -82,7 +83,7 @@ def getLatestResult(_only_last=False):
 
     latest_count = 10
     latest_result_list = result_list[:latest_count]
-    
+
     latest_result_date_list = findRegex(latest_result_list, 'date')
     latest_result_text_list = findRegex(latest_result_list, 'text')
     latest_result_link_list = findRegex(latest_result_list, 'link')
@@ -121,13 +122,11 @@ def sendMail(_content):
     """
     Sends email to the recepients with the _content
     """
-    print("Mail Sent!")
-
     date = _content[0]
     text = _content[1]
     link = _content[2]
 
-    result="""\
+    result = """\
 <html>
 <body>
 <h3>IP University Examination Results - Latest</h3>
@@ -202,6 +201,7 @@ def sendMail(_content):
     server.login(from_addr, "PASSWORD")
     server.sendmail(from_addr, to_addr, msg.as_string())
     server.quit()
+    print("{} - Mail sent to {} people.".format(datetime.datetime.now(), len(to_addr)))
 
 
 def main():
@@ -222,4 +222,3 @@ if __name__ == '__main__':
             main()
             time.sleep(wait_seconds)
     main()
-  
