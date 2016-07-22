@@ -3,6 +3,10 @@ from __future__ import print_function, unicode_literals
 import re
 import json
 import sys
+import smtplib
+
+from email.MIMEMultipart import MIMEMultipart
+from email.MIMEText import MIMEText
 
 import requests
 from bs4 import BeautifulSoup
@@ -12,6 +16,7 @@ if (sys.version_info > (3, 0)):
     unicode = str
 
 base_url = 'http://www.ipu.ac.in/exam_results.php'
+current_latest = "Result (May 2016) of M. Tech (ITW), 6th Sem "
 
 
 def getSoup(_url):
@@ -56,28 +61,70 @@ def findRegex(_string, _type):
     return result if result else None
 
 
-def main():
+def getLatestResult(_only_last=False):
+    """
+    Returns either:
+        10 latest results from the results page.
+        1 lastest result from the results page.
+    """
     soup = getSoup(base_url)
     result_table = soup.find('table').find('tbody')
     
     latest_date = result_table.find('tr').find_all('td')[-1].string
+    latest_text = result_table.find('tr').find('td').find('a').string
+    
+    if _only_last:
+        return latest_text
+
     result_list = result_table.find_all('tr')
 
     latest_count = 10
     latest_result_list = result_list[:latest_count]
-    first_latest_date = findRegex(latest_result_list[1], 'date')
-    last_latest_date = findRegex(latest_result_list[-1], 'date')
-
+    
+    latest_result_date_list = findRegex(latest_result_list, 'date')
     latest_result_text_list = findRegex(latest_result_list, 'link')
+    
+    return latest_result_date_list, latest_result_text_list
 
-    print(latest_result_text_list)
+
+def checkUpdate():
+    """
+    Returns True if result updated. False otherwise. 
+    """
+    if getLatestResult(_only_last=True) == current_latest:
+        return False
+    return True
 
 
+def sendMail(_content):
+    """
+    Sends email to the recepients with the _content 
+    """
+    print("MAIL!")
+    fromaddr = "YOUR ADDRESS"
+    toaddr = "ADDRESS YOU WANT TO SEND TO"
+    msg = MIMEMultipart()
+    msg['From'] = fromaddr
+    msg['To'] = toaddr
+    msg['Subject'] = "SUBJECT OF THE MAIL"
+     
+    body = "YOUR MESSAGE HERE"
+    msg.attach(MIMEText(body, 'plain'))
+     
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.starttls()
+    server.login(fromaddr, "YOUR PASSWORD")
+    text = msg.as_string()
+    server.sendmail(fromaddr, toaddr, text)
+    server.quit()
 
+
+def main():
+    current_latest = getLatestResult(_only_last=True)
+
+    if checkUpdate():
+        sendMail(getLatestResult())
 
 
 if __name__ == '__main__':
     main()
-
-
-
