@@ -1,5 +1,5 @@
 # IPU Result Notify
-Get email notifications when IP University uploads exam results.
+Get email notifications when IP University (GGSIPU) uploads exam results.
 
 ## What is this
 This python script monitors the [IP University results page](http://www.ipu.ac.in/exam_results.php) for any changes. An email is sent to the user whenever there is a change.
