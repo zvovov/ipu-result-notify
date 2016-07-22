@@ -88,7 +88,7 @@ def getLatestResult(_only_last=False):
     latest_result_link_list = findRegex(latest_result_list, 'link')
 
     latest_result_link_list = [base_url[:20] + latest_result_link_list[i] for i in range(10)]
-    
+
     return latest_result_date_list, latest_result_text_list, latest_result_link_list
 
 
@@ -221,3 +221,5 @@ if __name__ == '__main__':
         while True:
             main()
             time.sleep(wait_seconds)
+    main()
+  
