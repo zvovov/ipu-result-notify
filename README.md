@@ -2,14 +2,14 @@
 Get email notifications when IP University uploads exam results.
 
 ## What is this
-This python script monitors the [IP University results page](http://www.ipu.ac.in/exam_results.php) page for any changes. An email is sent to the user whenever there is a change.
+This python script monitors the [IP University results page](http://www.ipu.ac.in/exam_results.php) for any changes. An email is sent to the user whenever there is a change.
 
 ## Why
 To save the F5 key from incessant torture.
 
 
 ## How To
-1. Clone this repository
+1. Clone this repository.
     ```
     $ git clone https://github.com/zvovov/ipu-result-notify.git
     ```
@@ -26,14 +26,14 @@ To save the F5 key from incessant torture.
     ...
     server.login(from_addr, "PASSWORD")
     ```
-    You can even enter the same email (gmail) in sender and receiver to get updates yourself.
+    You can even enter the same email (gmail) in sender and receiver to send emails to yourself.
 
 4. Run the script.
     Only runs on Python 3.x
     ```
     $ python result.py 600
     ```
-    ```600``` is the time interval (in seconds) after which the script will check if the result page changed. This process will go on, unless stopped using ```Ctrl-C```.
+    ```600``` is the time interval (in seconds) after which the script will check if the result page has changed. This wait-check process will go on, unless stopped using ```Ctrl-C```.
 
 5. Run this script on your machine or on a server.
 
