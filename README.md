@@ -41,5 +41,5 @@ To save the F5 key from incessant torture.
 
 6. Profit.
 
-##License
+## License
 [MIT](https://github.com/zvovov/ipu-result-notify/blob/master/LICENSE)
